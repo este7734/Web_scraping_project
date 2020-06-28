@@ -53,7 +53,7 @@ def get_soup_links(soup):
 # This function is for use with only the Topic pages on diezeit.de
 # Search through ALL links and filter for only those that are for actual articles
 # links are formatted differently 
-def get_articles__topics(links, old_url_set):
+def get_articles_topics(links, old_url_set):
     articles = []
     for link in links:
         try:
@@ -70,7 +70,7 @@ def get_articles__topics(links, old_url_set):
     return articles, old_url_set
 
 # Check if new urls exists in the old_url_set. if yes, return True; if no, return False
-# This function is used in the get_articles__topics function
+# This function is used in the get_articles_topics function
 def url_check(old_url_set, url):
     url_set = set([url])
     test_set = old_url_set & url_set
@@ -81,7 +81,7 @@ def url_check(old_url_set, url):
     return check
 
 # Get html strings from list of article weblinks
-def get_html_(articles):
+def get_html(articles):
     soup_list = []
     for article in articles:
         _, text = get_html(article)
@@ -90,7 +90,7 @@ def get_html_(articles):
     return soup_list
 
   # Break out article_body, article_headline, and article_date from each article in provided hyperlinks and put into a dictionary called: out_list
-def get__elements(soup_list, articles):
+def get_elements(soup_list, articles):
     out_list = []
     i = 0
     for article in soup_list:
@@ -118,7 +118,7 @@ def get__elements(soup_list, articles):
 
 """## Define URL Variables and Run Functions
 
-<font color='orange'>Step 1.</font> Instantiate `tags and values`. Then instntiate `old_url_set` to be used in the `get_articles__topics` function. This is a running log of article links that will be compiled by iterating from steps 2 - 3.
+<font color='orange'>Step 1.</font> Instantiate `tags and values`. Then instntiate `old_url_set` to be used in the `get_articles_topics` function. This is a running log of article links that will be compiled by iterating from steps 2 - 3.
 """
 
 # Die Zeit classes and tags
@@ -134,9 +134,9 @@ date_tag = 'metadata'
 # running the scrape iterations
 old_url_set = set([])
 
-"""## Scrape  Topics pages for all the most recent news articles. <font color='orange'>*Run Steps 2 - 3 for each instance of `url` variable, before moving on to the next steps*</font>
+"""## Scrape Die Zeit Topics pages for all the most recent news articles. <font color='orange'>*Run Steps 2 - 3 for each instance of `url` variable, before moving on to the next steps*</font>
 
-<font color='orange'>Step 2.</font> Define variables for each of  main topics pages. Run this cell for each iteration by uncommenting a different url each time.
+<font color='orange'>Step 2.</font> Define variables for each of Die Zeit main topics pages. Run this cell for each iteration by uncommenting a different url each time.
 """
 
 # Define url variables
@@ -172,7 +172,7 @@ links = get_soup_links(soup)
 # Use this for Topics Pages only
 # Filter out only those links that are for actual articles. We only want the "good" links
 # This filters out things like links to images and advertisements or non-news worthy pages
-articles, old_url_set = get_articles__topics(links, old_url_set)
+articles, old_url_set = get_articles_topics(links, old_url_set)
 print(len(articles))
 # Print out the running list of hyperlinks to see how many you have
 print(len(old_url_set))
@@ -189,12 +189,12 @@ print(len(old_url_set))
 # Get soup for each one of the "good" links
 url_links = list(old_url_set) # Convert the running set of links to a list for use in the following functions
 
-soup_list = get_html_(url_links)
+soup_list = get_html(url_links)
 print(f'Length of Soup List: {len(soup_list)}')
 #print(soup_list[0])
 
 # Parse the soup for each "good" link to get article text, title, and date
-out_list = get__elements(soup_list, url_links)
+out_list = get_elements(soup_list, url_links)
 print(f'Length of out_list: {len(out_list)}')
 #out_list[0:2]
 
